@@ -11,18 +11,56 @@ function plot_ci(data)
     x_idx = 1:length(labels_x);
     Y_mat = [data.ED1, data.ED2, data.ED3, data.ED4];
 
-    % Regressions
-    [b_GSS, se_GSS] = robust_ols(Y_mat, data.MPS_GSS, true);
-    [b_BS,  se_BS]  = robust_ols(Y_mat, data.MPS_BS, true);
-    [b_Tgt, se_Tgt] = robust_ols(Y_mat, data.Target, true);
-    [b_Pat, se_Pat] = robust_ols(Y_mat, data.Path, true);
+
+    % 1. Exécution des régressions
+    [b_GSS, se_GSS, r2_GSS] = robust_ols(Y_mat, data.MPS_GSS, true);
+    [b_BS,  se_BS,  r2_BS]  = robust_ols(Y_mat, data.MPS_BS, true);
+    [b_Tgt, se_Tgt, r2_Tgt] = robust_ols(Y_mat, data.Target, true);
+    [b_Pat, se_Pat, r2_Pat] = robust_ols(Y_mat, data.Path, true);
     
-    f = figure('Name', 'Figure 1: Policy Expectations', ...
-               'NumberTitle', 'off', ...
-               'Color', 'w', ...
-               'Units', 'normalized', 'Position', [0.2 0.2 0.6 0.5]); 
+        % Noms des actifs et des modèles pour l'affichage
+    AssetNames = {'ED1', 'ED2', 'ED3', 'ED4'}; 
+    ModelNames = {'GSS'; 'BS'; 'Target'; 'Path'};
     
-    t = tiledlayout(1, 2, 'TileSpacing', 'compact', 'Padding', 'compact');
+    % On boucle sur les 4 actifs (les 4 colonnes de Y)
+    for i = 1:4
+        % 1. Récupération des Coefs (ligne 2 pour la pente), SE et R2 pour l'actif i
+        Coeffs = [b_GSS(2,i);  b_BS(2,i);  b_Tgt(2,i);  b_Pat(2,i)];
+        SEs    = [se_GSS(2,i); se_BS(2,i); se_Tgt(2,i); se_Pat(2,i)];
+        R2s    = [r2_GSS(i);   r2_BS(i);   r2_Tgt(i);   r2_Pat(i)];
+        
+        % Pour R2, on s'assure que c'est une colonne
+        if isrow(R2s), R2s = R2s'; end 
+        
+        % 2. Calcul des P-values
+        Pvals = 2 * (1 - normcdf(abs(Coeffs ./ SEs)));
+        
+        % 3. Création des étoiles de significativité
+        Stars = cell(4,1);
+        for k = 1:4
+            if Pvals(k) < 0.01,     Stars{k} = '***';
+            elseif Pvals(k) < 0.05, Stars{k} = '**';
+            elseif Pvals(k) < 0.1,  Stars{k} = '*';
+            else,                   Stars{k} = '';
+            end
+        end
+        
+        % 4. Création et affichage du tableau pour cet actif
+        T = table(ModelNames, Coeffs, SEs, Pvals, Stars, R2s, ...
+            'VariableNames', {'Modele', 'Coef', 'SE', 'P_Value', 'Sig', 'R2'});
+        
+        fprintf('\n=========================================\n');
+        fprintf(' RÉSULTATS POUR L''ACTIF : %s\n', AssetNames{i});
+        fprintf('=========================================\n');
+        disp(T);
+    end
+    
+        f = figure('Name', 'Figure 1: Policy Expectations', ...
+                   'NumberTitle', 'off', ...
+                   'Color', 'w', ...
+                   'Units', 'normalized', 'Position', [0.2 0.2 0.6 0.5]); 
+        
+        t = tiledlayout(1, 2, 'TileSpacing', 'compact', 'Padding', 'compact');
 
     % Left: full MPS
     nexttile;

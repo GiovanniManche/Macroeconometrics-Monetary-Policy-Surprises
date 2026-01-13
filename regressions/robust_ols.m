@@ -37,7 +37,7 @@ function [beta_mat, se_mat, r2_vec, T_vec] = robust_ols(Y,X, intercept)
         y = Y(:,i);
         Mdl = fitlm(X, y, 'Intercept', intercept);
         % We correct to account for heteroskedasticity in the model 
-        [~, se, beta] = hac(Mdl, "Type","HC", "Weights", "CLM", "Display","off");
+        [~, se, beta] = hac(Mdl, "Type","HC", "Weights", "HC0", "Display","off");
     
         % Matrix creations (when first loop)
         if i==1

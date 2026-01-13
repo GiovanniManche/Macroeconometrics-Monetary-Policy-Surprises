@@ -34,7 +34,7 @@ function [avg_effect_vec] = compute_me(y,X, coefs)
     Mdl = fitlm(X, y, 'Intercept', false);
 
     % We correct to account for heteroskedasticity in the model
-    [var_coef, ~, beta] = hac(Mdl, "Type","HC", "Weights", "CLM", "Display","off");
+    [var_coef, ~, beta] = hac(Mdl, "Type","HC", "Weights", "HC0", "Display","off");
 
     % Compute the average effect
     average_effect = sum(beta(coefs,1));
