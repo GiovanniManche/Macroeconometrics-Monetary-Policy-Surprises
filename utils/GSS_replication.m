@@ -75,10 +75,7 @@ function [Target, Path, rotated_loadings] = GSS_replication(X_raw)
     beta_target_on_ed4 = reg_multivar.Coefficients.Estimate(2); % Coeff Z1
     beta_path_raw_on_ed4 = reg_multivar.Coefficients.Estimate(3); % Coeff Z2_temp
     
-    % 2. Calcul du facteur d'échelle CORRECT
-    % Formule : lambda = Beta_Raw / Beta_Target
-    % Cela divisera le coefficient brut par lambda pour obtenir Beta_Target
-    if abs(beta_target_on_ed4) < 1e-6
+    if abs(beta_target_on_ed4) < 1e-10
         error('Path factor has a null effect on ED4. We cannot normalize Path with respect to it.');
     end
     
