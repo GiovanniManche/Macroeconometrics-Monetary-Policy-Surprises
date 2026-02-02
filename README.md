@@ -6,7 +6,7 @@ Replication and extension of Herbert, Hubert, and Lé (2025)
 
 > **Main takeaway:** Monetary policy transmission to long-term yields is highly heterogeneous and is largely driven by higher-order moment announcements operating primarily through the real rate and term premium channels.
 
-![Console Output](graphs/teaser_hom_vs_nonhom_1999_2025.png)
+![HOM vs non-HOM effects on yields](graphs/hom_vs_nonhom_1999_2025.png)
 
 *Figure summarizing Table 3 (1999–2025): yield responses to monetary policy surprises are substantially larger during higher-order moment (HOM) events than during non-HOM events.*
 
