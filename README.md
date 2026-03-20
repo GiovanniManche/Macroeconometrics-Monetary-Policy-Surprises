@@ -142,6 +142,8 @@ Open and run `main.mlx` in MATLAB. This live script contains:
 4. Regression analysis
 5. Visualization of results
 
+> **Note:** `main.mlx` requires MATLAB to run. A pre-rendered PDF export is available as [`main_exported.pdf`](main_exported.pdf).
+
 ### Using Individual Functions
 
 #### Extract Target and Path Factors
