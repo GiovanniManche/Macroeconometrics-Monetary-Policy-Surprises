@@ -215,8 +215,9 @@ The analysis produces several key outputs (see `graphs/` folder):
 
 ## Authors
 
-Giovanni Manche & Timothée Dangleterre  
-Master in Quantitative Methods for Economic Decision | ENSAE Paris
+Giovanni Manche & Timothée Dangleterre
+Master in Quantitative Methods for Economic Decision | ENSAE Paris 
+
 Macroeconometrics: Advanced Time-Series Analysis course
 January 2026
 
